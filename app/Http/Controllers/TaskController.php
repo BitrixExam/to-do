@@ -20,9 +20,17 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function createTask(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'sometimes|in:pending,in_progress,completed'
+        ]);
+
+        $task = Task::create($validated);
+
+        return response()->json($task, 201);
     }
 
     /**
